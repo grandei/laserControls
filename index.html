@@ -21,7 +21,7 @@
 
                 newSphere.setAttribute('color', 'lightblue');
                 newSphere.setAttribute('scale', '0.2 0.2 0.2');
-                newSphere.setAttribute('position', `${Math.random() * 2 - 1} 3 -2`);
+                newSphere.setAttribute('position', '0.5 2.2 -4.3');
                 newSphere.setAttribute('dynamic-body', 'shape: sphere');
                 newSphere.setAttribute('grabbable', '');
                 newSphere.setAttribute('class', 'interact');
@@ -29,8 +29,6 @@
 
                 scene.appendChild(newSphere);
                 console.log("New ball:", newSphere);
-
-
 
             });
 
@@ -53,22 +51,27 @@
         <a-box
             class="interact"
             ballgen
-            position="0 1 -1"
-            scale="0.3 0.3 0.3"
+            position="0.2 0.7 -0.83"
+            rotation="20 0 0"
+            scale="0.3 0.3 0.07"
             color="red"
-            animation="property: position; to: 0 1 -1.3 ; dur: 300; startEvents: click;"
-            animation__2="property: position; to: 0 1 -1 ; dur: 300;"
+            animation="property: position; to: 0.2 0.7 -0.85; dur: 200; startEvents: click; dir: alternate; loop: 1;"
         ></a-box>
 
+        <!-- Ball Dispenser Ramp -->
         <a-box
             static-body
-            depth="0.5"
+            depth="0.1"
             height="4"
-            width="3"
+            width="0.8"
             color="black"
-            position="0 1.3 -3"
-            rotation="-40 0 0"
-            ></a-box>
+            position="0.45 1.3 -2.82"
+            rotation="-70 0 0"
+        ></a-box>
+
+        <a-box static-body depth="0.1" height="4" width="0.6" color="brown" position="0.85 1.4 -2.82" rotation="0 -90 70"></a-box>
+        <a-box static-body depth="0.1" height="4" width="0.6" color="brown" position="0.09 1.4 -2.82" rotation="0 -90 70"></a-box>
+        <a-box static-body depth="0.1" height="1" width="0.6" color="brown" position="0.5 0.7 -0.89" rotation="20 0 90"></a-box>        
 
 
         <a-box
@@ -76,7 +79,7 @@
             scale="12 2 0.1"
             color="green"
             position="0 1 5"
-            ></a-box>
+        ></a-box>
 
 
 
