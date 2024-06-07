@@ -39,18 +39,39 @@
         },
         onThrow: function (evt) {
             const handEl = evt.detail.hand;
-            const velocity = handEl.getAttribute('velocity'); // Get the hand's velocity
+            const handVelocity = handEl.components['velocity'].getVelocity(); // Get the hand's velocity
 
-            if (velocity) {
-                this.el.body.velocity.set(velocity.x, velocity.y, velocity.z);
+            if (handVelocity) {
+                const scaleFactor = 2; // Adjust this factor to change the throw distance
+                this.el.body.velocity.set(
+                    handVelocity.x * scaleFactor,
+                    handVelocity.y * scaleFactor,
+                    handVelocity.z * scaleFactor
+                );
             }
+        }
+    });
+
+    AFRAME.registerComponent('velocity', {
+        schema: {type: 'vec3'},
+        init: function () {
+            this.prevPosition = new THREE.Vector3();
+            this.velocity = new THREE.Vector3();
+        },
+        tick: function (time, delta) {
+            const position = this.el.object3D.position;
+            this.velocity.subVectors(position, this.prevPosition).divideScalar(delta / 1000);
+            this.prevPosition.copy(position);
+        },
+        getVelocity: function () {
+            return this.velocity.clone();
         }
     });
 </script>
 
 <body>
     <a-scene id="scene" physics="debug: true; gravity: -9.8; friction: 0.6; restitution: 0.6">
-        <a-entity static-body="shape: sphere; sphereRadius: 0.02;" sphere-collider="objects: .interact" super-hands id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
+        <a-entity static-body="shape: sphere; sphereRadius: 0.02;" sphere-collider="objects: .interact" super-hands id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc" velocity></a-entity>
         <a-plane static-body color="grey" rotation="-90 0 0" scale="15 15 15"></a-plane>
         <a-camera><a-cursor></a-cursor></a-camera>
         <a-box
