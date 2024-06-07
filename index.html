@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.4.0/dist/aframe-extras.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
     <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
@@ -43,10 +44,11 @@
 <body>
     <a-scene id="scene" physics="debug: true; gravity: -6; friction: 0.6; restitution: 0.6">
 
+        <a-sky color="lightblue"></a-sky>
 
+        <a-gltf-model src="rooster-fairground-10yr-03a/scene.gltf" scale="15 15 15" position="0 -15 0" animation-mixer="clip: Animation;"></a-gltf-model>
 
-
-        <a-plane static-body color="grey" rotation="-90 0 0" scale="15 15 15"></a-plane>
+        <a-plane static-body opacity="0" color="grey" rotation="-90 0 0" scale="55 55 55"></a-plane>
 
         <a-entity position="-0.4 0 -1.4">
             <a-camera><a-cursor></a-cursor></a-camera>
