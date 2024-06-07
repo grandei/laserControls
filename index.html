@@ -43,15 +43,15 @@
 <body>
     <a-scene id="scene" physics="debug: true; gravity: -6; friction: 0.6; restitution: 0.6">
 
-        <a-entity  position="-0.4 0 -1.4" static-body="shape: sphere; sphereRadius: 0.02;" sphere-collider="objects: .interact" super-hands id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
+        <a-entity static-body="shape: sphere; sphereRadius: 0.02;" sphere-collider="objects: .interact" super-hands id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
 
 
         <a-plane static-body color="grey" rotation="-90 0 0" scale="15 15 15"></a-plane>
 
-        <a-entity position="-0.4 1.6 -1.4">
+        <a-entity position="-0.4 0 -1.4">
             <a-camera><a-cursor></a-cursor></a-camera>
         </a-entity>
-        
+
         <a-box
             class="interact"
             ballgen
