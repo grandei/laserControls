@@ -22,56 +22,30 @@
                 newSphere.setAttribute('color', 'lightblue');
                 newSphere.setAttribute('scale', '0.2 0.2 0.2');
                 newSphere.setAttribute('position', '0.5 2.2 -4.3');
-                newSphere.setAttribute('dynamic-body', 'shape: sphere; mass: 1');
+                newSphere.setAttribute('dynamic-body', 'shape: sphere; mass: 1; linearDamping: 0.4;');
                 newSphere.setAttribute('grabbable', '');
                 newSphere.setAttribute('class', 'interact');
-                newSphere.setAttribute('throwable', ''); // Custom component for handling throw
+                
 
                 scene.appendChild(newSphere);
                 console.log("New ball:", newSphere);
+
             });
+
         }
+
+
     });
 
-    AFRAME.registerComponent('throwable', {
-        init: function () {
-            this.el.addEventListener('grab-end', this.onThrow.bind(this));
-        },
-        onThrow: function (evt) {
-            const handEl = evt.detail.hand;
-            const handVelocity = handEl.components['velocity'].getVelocity(); // Get the hand's velocity
 
-            if (handVelocity) {
-                const scaleFactor = 2; // Adjust this factor to change the throw distance
-                this.el.body.velocity.set(
-                    handVelocity.x * scaleFactor,
-                    handVelocity.y * scaleFactor,
-                    handVelocity.z * scaleFactor
-                );
-            }
-        }
-    });
-
-    AFRAME.registerComponent('velocity', {
-        schema: {type: 'vec3'},
-        init: function () {
-            this.prevPosition = new THREE.Vector3();
-            this.velocity = new THREE.Vector3();
-        },
-        tick: function (time, delta) {
-            const position = this.el.object3D.position;
-            this.velocity.subVectors(position, this.prevPosition).divideScalar(delta / 1000);
-            this.prevPosition.copy(position);
-        },
-        getVelocity: function () {
-            return this.velocity.clone();
-        }
-    });
 </script>
 
 <body>
-    <a-scene id="scene" physics="debug: true; gravity: -9.8; friction: 0.6; restitution: 0.6">
-        <a-entity static-body="shape: sphere; sphereRadius: 0.02;" sphere-collider="objects: .interact" super-hands id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc" velocity></a-entity>
+    <a-scene id="scene" physics="debug: true; gravity: -5; friction: 0.6; restitution: 0.6">
+
+        <a-entity static-body="shape: sphere; sphereRadius: 0.02;" sphere-collider="objects: .interact" super-hands id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
+
+
         <a-plane static-body color="grey" rotation="-90 0 0" scale="15 15 15"></a-plane>
         <a-camera><a-cursor></a-cursor></a-camera>
         <a-box
@@ -98,12 +72,22 @@
         <a-box static-body depth="0.1" height="4" width="0.6" color="brown" position="0.85 1.4 -2.82" rotation="0 -90 70"></a-box>
         <a-box static-body depth="0.1" height="4" width="0.6" color="brown" position="0.09 1.4 -2.82" rotation="0 -90 70"></a-box>
         <a-box static-body depth="0.1" height="1" width="0.6" color="brown" position="0.5 0.7 -0.89" rotation="20 0 90"></a-box>        
+
+
         <a-box
             static-body
             scale="12 2 0.1"
             color="green"
             position="0 1 5"
         ></a-box>
+
+
+
+
+
+
+
     </a-scene>
+    
 </body>
 </html>
