@@ -25,16 +25,25 @@
                 newSphere.setAttribute('dynamic-body', 'shape: sphere; mass: 1');
                 newSphere.setAttribute('grabbable', '');
                 newSphere.setAttribute('class', 'interact');
-
-                // Listen for release event to apply force
-                newSphere.addEventListener('mouseup', function(){
-                    let velocity = new THREE.Vector3(0, 3, -10); // Adjust the velocity as needed
-                    newSphere.body.velocity.set(velocity.x, velocity.y, velocity.z);
-                });
+                newSphere.setAttribute('throwable', ''); // Custom component for handling throw
 
                 scene.appendChild(newSphere);
                 console.log("New ball:", newSphere);
             });
+        }
+    });
+
+    AFRAME.registerComponent('throwable', {
+        init: function () {
+            this.el.addEventListener('grab-end', this.onThrow.bind(this));
+        },
+        onThrow: function (evt) {
+            const handEl = evt.detail.hand;
+            const velocity = handEl.getAttribute('velocity'); // Get the hand's velocity
+
+            if (velocity) {
+                this.el.body.velocity.set(velocity.x, velocity.y, velocity.z);
+            }
         }
     });
 </script>
