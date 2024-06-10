@@ -11,9 +11,12 @@
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
     <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://unpkg.com/aframe-aabb-collider-component@3.2.2/dist/aframe-aabb-collider-component.min.js"></script>
 </head>
 
 <script>
+    let points = 0;
+
     AFRAME.registerComponent('ballgen', {
         init: function(){
             let button = this.el;
@@ -21,12 +24,14 @@
                 let scene = document.querySelector('#scene');
                 let newSphere = document.createElement('a-sphere');
 
+                newSphere.addEventListener('hitstart', score);
                 newSphere.setAttribute('color', 'lightblue');
                 newSphere.setAttribute('scale', '0.08 0.08 0.08');
                 newSphere.setAttribute('position', '0.45 1.76 -3.6');
                 newSphere.setAttribute('dynamic-body', 'shape: sphere; mass: 10; linearDamping: 0.4;');
                 newSphere.setAttribute('grabbable', '');
                 newSphere.setAttribute('class', 'interact');
+                newSphere.setAttribute('aabb-collider', 'objects: .cup');
                 
 
                 scene.appendChild(newSphere);
@@ -39,26 +44,39 @@
 
     });
 
+function score(){
+
+    let p = document.querySelector('#sc');
+    var collidedSphere = event.target;
+    collidedSphere.remove();
+    points++;
+    p.setAttribute('value', `Score: ${points}`);
+    
+}
 
 </script>
 
 <body>
     <a-scene id="scene" physics="debug: true; gravity: -6; friction: 0.6; restitution: 0.6" renderer="colorManagement: true">
-
+<!--
         <a-super-sky 
         orbitduration="1"
         groundcolor="#7BC8A4"
     ></a-super-sky>
+-->
+
+        <a-sky color="lightblue"></a-sky>
 
         <a-gltf-model src="rooster-fairground-10yr-03a/scene.gltf" scale="15 15 15" position="0 -15 0" animation-mixer="clip: Animation;"></a-gltf-model>
 
         <a-plane static-body opacity="0" color="grey" rotation="-90 0 0" scale="55 55 55"></a-plane>
 
-        <a-entity position="-0.4 0 -1.4">
-            <a-camera><a-cursor></a-cursor></a-camera>
-            <a-entity static-body="shape: sphere; sphereRadius: 0.02;" sphere-collider="objects: .interact" super-hands id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
+        <a-entity position="-0.8 0 -1.4">
+            <a-camera wasd-controls="acceleration: 250"><a-cursor></a-cursor></a-camera>
+            <a-entity position="0.5 0 0" static-body="shape: sphere; sphereRadius: 0.02;" sphere-collider="objects: .interact" super-hands id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
         </a-entity>
 
+        <!-- Button -->
         <a-box
             class="interact"
             ballgen
@@ -84,22 +102,40 @@
         <a-box static-body depth="0.08" height="2" width="0.2" color="brown" position="0.15 1.35 -2.82" rotation="0 -90 70"></a-box>
         <a-box static-body depth="0.08" height="0.8" width="0.2" color="brown" position="0.45 1.0 -1.861" rotation="20 0 90"></a-box>        
 
+<!-- Tossing Gallery -->
+
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-0.8 0.25 -5"></a-cylinder>
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-1.3 0.25 -5"></a-cylinder>
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-1.8 0.25 -5"></a-cylinder>
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-0.3 0.25 -5"></a-cylinder>
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="0.2 0.25 -5"></a-cylinder>
+
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-1.05 0.25 -5.5"></a-cylinder>
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-1.55 0.25 -5.5"></a-cylinder>
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-0.55 0.25 -5.5"></a-cylinder>
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-0.05 0.25 -5.5"></a-cylinder>
+
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-0.8 0.25 -6"></a-cylinder>
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-1.3 0.25 -6"></a-cylinder>
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-0.3 0.25 -6"></a-cylinder>
+
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-1.05 0.25 -6.5"></a-cylinder>
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-0.55 0.25 -6.5"></a-cylinder>
+
+<a-cylinder static-body color="cyan" material="side: double" open-ended="true" rotation="0 0 0" height="0.5" radius="0.25" position="-0.8 0.25 -7"></a-cylinder>
 
 
-        <a-box
-            static-body
-            scale="12 2 0.1"
-            color="green"
-            position="0 1 5"
-        ></a-box>
+<a-triangle class="cup" rotation="-90 0 0" opacity="0" vertex-a="0 1.61 0" vertex-b="-1.26 -0.92 0" vertex-c="1.26 -0.92 0" position="-0.815 0 -5.726"></a-triangle>
 
+<a-box static-body height="4" depth="0.25" width="3" color="black" position="-2 2 -6.3" rotation="0 65 0"></a-box>
+<a-box static-body height="4" depth="0.25" width="3" color="black" position="0.4 2 -6.3" rotation="0 -65 0"></a-box>
+<a-box static-body height="4" depth="0.25" width="1" color="black" position="-0.8 2 -7.7" rotation="0 0 0"></a-box>
 
+<a-plane color="black" scale="1.5 0.5 0.1" position="-0.80 4 -6" >
+    <a-text id="sc" value="Score: " position="-0.4 0 0.1"></a-text>
+</a-plane>
 
-
-
-
-
-    </a-scene>
+</a-scene>
     
 </body>
 </html>
