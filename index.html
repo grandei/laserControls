@@ -65,8 +65,9 @@ AFRAME.registerComponent('gamereset', {
         var pinNum = 0;
         let button = this.el;
         var aud = document.getElementById('st');
-        aud.play();
+
         button.addEventListener('click', function() {
+            aud.play();
             let scene = document.querySelector('#scene');
             var x = -0.8;
             var y = 1.5;
