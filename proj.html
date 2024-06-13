@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.4.0/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/a-super-sky@1.1.1/super-sky.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
+    <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://unpkg.com/aframe-aabb-collider-component@3.2.2/dist/aframe-aabb-collider-component.min.js"></script>
+</head>
+
+<script>
+
+// Add points variable
+let points = 0;
+
+AFRAME.registerComponent('ballgen', {
+    init: function(){
+        let button = this.el;
+        button.addEventListener('click', function(){
+            let scene = document.querySelector('#scene');
+            let newSphere = document.createElement('a-gltf-model');
+            var posX = Math.random() * 5;
+
+            newSphere.setAttribute('src', '#skullModel')
+            newSphere.setAttribute('scale', '0.15 0.15 0.15');
+            newSphere.setAttribute('dynamic-body', 'shape: sphere; sphereRadius: 0.15;');
+            newSphere.setAttribute('position', '1.15 1.5 -0.6');
+            newSphere.setAttribute('class', 'interact');
+            newSphere.setAttribute('grabbable', '');
+
+            scene.appendChild(newSphere);
+        })
+    }
+})
+
+function updateScoreDisplay(score) {
+    const scoreDisplay = document.querySelector('#scoreDisplay');
+    scoreDisplay.innerHTML = ''; // Clear previous score display
+
+    const digits = score.toString().split('');
+    digits.forEach((digit, index) => {
+        let model = document.createElement('a-gltf-model');
+        model.setAttribute('src', `#num${digit}`);
+        model.setAttribute('scale', '0.007 0.007 0.007');
+        model.setAttribute('position', `${index * 0.6} 0 0`);
+        scoreDisplay.appendChild(model);
+    });
+}
+
+// This handles the scoring by updating the a-gltf-model display value
+function score(){
+    points++;
+    updateScoreDisplay(points);
+}
+
+AFRAME.registerComponent('gamereset', {
+    init: function() {
+        var pins = [];
+        var pinNum = 0;
+        let button = this.el;
+        var aud = document.getElementById('st');
+        aud.play();
+        button.addEventListener('click', function() {
+            let scene = document.querySelector('#scene');
+            var x = -0.8;
+            var y = 1.5;
+            var z = -3;
+
+            // Clear previous pins
+            pins.forEach(pin => scene.removeChild(pin));
+            pins = [];
+
+            points = 0;
+            updateScoreDisplay(points);
+
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 3; j++) {
+                    let elem = document.createElement('a-box');
+                    elem.setAttribute('class', 'pin');
+                    elem.setAttribute('id', 'p' + pinNum++);
+                    elem.setAttribute('aabb-collider', 'objects: .coll');
+                    elem.setAttribute('dynamic-body', '');
+                    elem.setAttribute('width', '0.4');
+                    elem.setAttribute('height', '0.75');
+                    elem.setAttribute('depth', '0.2');
+                    elem.setAttribute('color', 'blue');
+                    elem.setAttribute('position', `${x} ${y} ${z}`);
+                    
+                    pins.push(elem);
+                    x = x + 0.8;
+                }
+                x = -0.8;
+                y = y + 1;
+            }
+
+            pins.forEach(pin => {
+                scene.appendChild(pin);
+                pin.addEventListener('hitstart', score);
+            });
+        });
+    }
+});
+
+</script>
+<body>
+    <a-scene id="scene" physics="debug: false; gravity: -9.8; friction: 0.6; restitution: 0.6" renderer="colorManagement: true; physicallyCorrectLights: true;">
+        <a-assets>
+            <audio id="st" src="fear.mp3" preload="auto" loop="true"></audio>
+            <a-asset-item id="skullModel" src="skull_salazar_downloadable/scene.gltf"></a-asset-item>
+            <a-asset-item id="sceneModel" src="Sketchfab_Scene.gltf"></a-asset-item>
+            <a-asset-item id="guardianModel" src="guardian_of_hell_-_doom_3/scene.gltf"></a-asset-item>
+            <a-asset-item id="gateModel" src="skull_gate/scene.gltf"></a-asset-item>
+            <a-asset-item id="table" src="sacrifice_table/scene.gltf"></a-asset-item>
+            <a-asset-item id="sGen" src="color_orb/scene.gltf"></a-asset-item>
+            <a-asset-item id="pGen" src="cyber_orb/scene.gltf"></a-asset-item>
+            <a-asset-item id="torch" src="non-textured_burning_torch_1/scene.gltf"></a-asset-item>
+            <a-asset-item id="skullwall" src="wall_of_skulls_1/scene.gltf"></a-asset-item>
+            <a-asset-item id="orn" src="ornamental_demon_skull/scene.gltf"></a-asset-item>
+            <a-asset-item id="pillar" src="damaged_pillar/scene.gltf"></a-asset-item>
+            <a-asset-item id="lantern" src="skull_lantern/scene.gltf"></a-asset-item>
+            <a-asset-item id="num0" src="0.gltf"></a-asset-item>
+            <a-asset-item id="num1" src="1.gltf"></a-asset-item>
+            <a-asset-item id="num2" src="2.gltf"></a-asset-item>
+            <a-asset-item id="num3" src="3.gltf"></a-asset-item>
+            <a-asset-item id="num4" src="4.gltf"></a-asset-item>
+            <a-asset-item id="num5" src="5.gltf"></a-asset-item>
+            <a-asset-item id="num6" src="6.gltf"></a-asset-item>
+            <a-asset-item id="num7" src="7.gltf"></a-asset-item>
+            <a-asset-item id="num8" src="8.gltf"></a-asset-item>
+            <a-asset-item id="num9" src="9.gltf"></a-asset-item>
+        </a-assets>
+
+        <a-sky color="#7f3b08"></a-sky>
+        <a-gltf-model src="#sceneModel" scale="0.6 0.7 0.6" rotation="0 160 0" position="-1.43 -0.1 -11.84"></a-gltf-model>
+        <a-gltf-model src="#guardianModel" scale="1.5 1.5 1.5" position="-0.35 4.33 -13.65" animation-mixer="clip: Idle"></a-gltf-model>
+        <a-gltf-model src="#torch" position="-1.9 1.74 -2.93" scale="0.1 0.1 0.1" rotation="0 0 5" animation-mixer><a-light position="-0.145 10 0" color="#bb9f0c" decay="0.5" intensity="3" type="point"></a-light></a-gltf-model>
+        <a-gltf-model src="#torch" position="1.9 1.74 -2.93" scale="0.1 0.1 0.1" rotation="0 0 -5" animation-mixer><a-light position="-0.145 10 0" color="#bb9f0c" decay="0.5" intensity="3" type="point"></a-light></a-gltf-model>
+        <a-gltf-model src="#gateModel" position="0 0 -3" scale="0.5 0.7 0.5"></a-gltf-model>
+        <a-gltf-model src="#table" position="0.778 0.198 -0.169" scale="0.025 0.03 0.02" rotation="0 -90 0"></a-gltf-model>
+        <a-gltf-model src="#table" position="-0.5 0.198 -0.169" scale="0.025 0.03 0.02" rotation="0 90 0"></a-gltf-model>
+
+        <a-camera><a-cursor></a-cursor></a-camera>
+        <a-entity position="0.5 0 0" static-body="shape: sphere; sphereRadius: 0.02;" sphere-collider="objects: .interact" super-hands id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
+        <a-entity position="0.5 0 0" static-body="shape: sphere; sphereRadius: 0.02;" sphere-collider="objects: .interact" super-hands id="leftHand" hand-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
+
+
+        <a-gltf-model src="#pGen" ballgen color="green" class="interact" scale="0.1 0.1 0.1" position="0.665 1.237 -0.36" animation-mixer animation="property: scale; to: 0.15 0.15 0.15; dur: 200; startEvents: click; dir: alternate; loop: 1;"></a-gltf-model>
+<!--    <a-box class="interact" ballgen color="green" width="0.25" height="0.25" depth="0.25" position="0.5 1.15 -0.5" animation="property: position; to: 0.5 1.05 -0.5; dur: 200; startEvents: click; dir: alternate; loop: 1;"></a-box>
+        <a-box class="interact" gamereset color="yellow" width="0.25" height="0.25" depth="0.25" position="0.5 1.15 0" animation="property: position; to: 0.5 1.05 0; dur: 200; startEvents: click; dir: alternate; loop: 1;"></a-box>
+-->     <a-gltf-model src="#pGen" gamereset class="interact" scale="0.1 0.1 0.1" position="-0.372 1.237 -0.36" animation-mixer animation="property: scale; to: 0.15 0.15 0.15; dur: 200; startEvents: click; dir: alternate; loop: 1;"></a-gltf-model>
+
+        <!-- Ball Dispenser -->
+        <a-gltf-model src="#pillar" position="1.15 1 -1.86" scale="0.13 0.1 0.1">
+            <a-gltf-model src="#lantern" position="-2.166 9.29 3.266" scale="0.2 0.2 0.2">
+                <a-light position="0 0 0" color="#bb9f0c" decay="0.5" intensity="1" type="point"></a-light>
+            </a-gltf-model>
+            <a-gltf-model src="#lantern" position="2.166 9.29 3.266" scale="0.2 0.2 0.2"></a-gltf-model>
+        </a-gltf-model>
+        <a-gltf-model src="#skullwall" position="1.44 1.43 -0.67" scale="0.015  0.01 0.02" rotation="0 -90 -9.6"></a-gltf-model>
+        <a-gltf-model src="#skullwall" position="0.82 1.42 -0.67" scale="0.015  0.01 0.02" rotation="0 90 31"></a-gltf-model>
+        <a-box static-body opacity="0" depth="0.08" height="2" width="0.6" position="1.15 1.3 -0.6" rotation="-70 0 0"></a-box>
+        <a-box static-body opacity="0" depth="0.08" height="2" width="0.2" color="brown" position="1.45 1.35 -0.6" rotation="0 -90 70"></a-box>
+        <a-box static-body opacity="0" depth="0.08" height="2" width="0.2" color="brown" position="0.85 1.35 -0.6" rotation="0 -90 70"></a-box>
+        <a-box static-body opacity="0" depth="0.08" height="0.8" width="0.2" color="brown" position="1.15 1.2 0.22" rotation="20 0 90"></a-box>    
+        <a-gltf-model src="#orn" position="1.134 1.152 0.368" scale="0.2 0.2 0.2" rotation="0 180 0"></a-gltf-model>
+
+        <!-- Game setup -->
+        <a-box static-body width="2" height="0.1" depth="0.25" color="red" position="0 3 -3"></a-box>
+        <a-box static-body width="2" height="0.1" depth="0.25" color="red" position="0 2 -3"></a-box>
+        <a-box static-body width="2" height="0.1" depth="0.25" color="red" position="0 1 -3"></a-box>
+
+        <!-- Collision Detector -->
+        <a-box class="coll" opacity="0" width="15" height="0.1" depth="15" color="red" position="0 0.98 -4.625"></a-box>
+
+        <!-- Score Display -->
+        <a-entity id="scoreDisplay" position="-1.7 1.7 -2.7"></a-entity>
+    </a-scene>
+    <script>
+        // Initialize score display with 0
+        updateScoreDisplay(0);
+    </script>
+</body>
+</html>

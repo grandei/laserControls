@@ -5,22 +5,182 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.4.0/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/a-super-sky@1.1.1/super-sky.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
     <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://unpkg.com/aframe-aabb-collider-component@3.2.2/dist/aframe-aabb-collider-component.min.js"></script>
 </head>
 
+<script>
 
+// Add points variable
+let points = 0;
+
+AFRAME.registerComponent('ballgen', {
+
+    init: function(){
+        let button = this.el;
+        button.addEventListener('click', function(){
+
+            let scene = document.querySelector('#scene');
+            let newSphere = document.createElement('a-sphere');
+            let piece = document.querySelector('#p');// grab the game pieces 
+            var posX = Math.random() * 5; 
+
+
+            piece.addEventListener('hitstart', score); //when the game piece hits the object
+                                                       //with a collision detector, run the score function
+
+            newSphere.setAttribute('radius', '0.5');
+            newSphere.setAttribute('dynamic-body', 'shape: sphere');
+            newSphere.setAttribute('color', 'blue');
+            newSphere.setAttribute('position', '0.8 4.2 -2.9');
+            newSphere.setAttribute('class', 'interact'); //each sphere should have the class 'interact' which helps the controls know what you can interact with
+            newSphere.setAttribute('grabbable', '');// this makes the spheres grabbable
+
+            scene.appendChild(newSphere);
+
+
+
+
+
+        })
+
+
+
+    }
+
+
+
+})
+//this handles the scoring by updating the a-text tag value
+function score(){
+
+    let p = document.querySelector('#sc'); //grab the a-text tag with the id 'sc'
+    points++; //increase points by 1
+    p.setAttribute('value', `Score: ${points}`); //update the score in the a-text tag
+
+}
+
+
+AFRAME.registerComponent('gamereset', {
+    init: function(){
+        var pins = [];
+        var pinNum = 0;
+        let button = this.el;
+        button.addEventListener('click', function(){
+            let scene = document.querySelector('#scene');
+            var x = -0.8;
+            var y = 1.5;
+            var z = -3;
+            pins.forEach(pin => scene.removeChild(pin));
+            pins = [];
+
+            for (var i = 0; i < 3; i++){
+                for(var j = 0; j < 3; j++){
+                    let elem = document.createElement('a-box');
+                    elem.setAttribute('class', 'pin');
+                    elem.setAttribute('id', 'p' + pinNum++);
+                    elem.setAttribute('aabb-collider', 'objects: .coll');
+                    elem.setAttribute('dynamic-body', '');
+                    elem.setAttribute('width', '0.4');
+                    elem.setAttribute('height', '0.75');
+                    elem.setAttribute('depth', '0.2');
+                    elem.setAttribute('color', 'blue');
+                    elem.setAttribute('position', `${x} ${y} ${z}`);
+
+                    pins.push(elem);
+                    x = x + 0.8;
+                }
+                x = -0.8;
+                y++;
+            }
+
+            pins.forEach(pin => {
+                scene.appendChild(pin);
+                pin.addEventListener('hitstart', score);
+            })
+
+
+        })
+
+
+
+
+    }
+
+
+
+
+
+})
+
+
+
+</script>
 <body>
     <a-scene id="scene" physics="debug: true; gravity: -9.8; friction: 0.6; restitution: 0.6">
 
+    <a-camera><a-cursor></a-cursor></a-camera>
+    <a-entity position="0.5 0 0" static-body="shape: sphere; sphereRadius: 0.02;" sphere-collider="objects: .interact" super-hands id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"></a-entity>
+    
+    <a-plane color="gray" width="20" height="20" rotation="-90 0 0"></a-plane>
+    <a-box color="red" width="0.5" height="0.5" position="0.5 1 -0.5"></a-box>
+    <a-box class="interact" ballgen color="green" width="0.25" height="0.25" depth="0.25" position="0.5 1.15 -0.5" animation="property: position; to: 0.5 1.05 -0.5; dur: 200; startEvents: click; dir: alternate; loop: 1;"></a-box>
+
+
+    
 
 
 
 
 
 
+
+
+
+
+
+
+
+    <!-- Game setup -->
+    <a-box static-body width="2" height="0.1" depth="0.25" color="red" position="0 3 -3"></a-box>
+    <a-box static-body width="2" height="0.1" depth="0.25" color="red" position="0 2 -3"></a-box>
+    <a-box static-body width="2" height="0.1" depth="0.25" color="red" position="0 1 -3"></a-box>
+
+    <!-- Game Pieces Top Row -->
+    <a-box id="p" aabb-collider='objects: .coll' dynamic-body width="0.4" height="0.75" depth="0.2" color="blue" position="0.8 3.5 -3"></a-box>
+    <a-box id="p" aabb-collider='objects: .coll' dynamic-body width="0.4" height="0.75" depth="0.2" color="blue" position="0 3.5 -3"></a-box>
+    <a-box id="p" aabb-collider='objects: .coll' dynamic-body width="0.4" height="0.75" depth="0.2" color="blue" position="-0.8 3.5 -3"></a-box>
+
+    <!-- Game Pieces Middle Row -->
+    <a-box dynamic-body width="0.4" height="0.75" depth="0.2" color="blue" position="0.8 2.5 -3"></a-box>
+    <a-box dynamic-body width="0.4" height="0.75" depth="0.2" color="blue" position="0 2.5 -3"></a-box>
+    <a-box dynamic-body width="0.4" height="0.75" depth="0.2" color="blue" position="-0.8 2.5 -3"></a-box>
+
+    <!-- Game Pieces Bottom Row -->
+    <a-box dynamic-body width="0.4" height="0.75" depth="0.2" color="blue" position="0.8 1.5 -3"></a-box>
+    <a-box dynamic-body width="0.4" height="0.75" depth="0.2" color="blue" position="0 1.5 -3"></a-box>
+    <a-box dynamic-body width="0.4" height="0.75" depth="0.2" color="blue" position="-0.8 1.5 -3"></a-box>
+
+
+
+
+    <!-- Collision Detector -->
+     <a-box class="coll" width="5" height="0.1" depth="7" color="red" position="0 0.98 -4.625"></a-box>
+
+
+
+
+
+
+    <!-- Score Display -->
+    <a-plane color="black" scale="1.5 0.5 0.1" position="-2 1.5 -3" >
+        <a-text id="sc" value="Score: 0" position="-0.4 0 0.1"></a-text>
+    </a-plane>
 
 
     </a-scene>

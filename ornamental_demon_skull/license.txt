@@ -1,0 +1,11 @@
+Model Information:
+* title:	Ornamental Demon Skull
+* source:	https://sketchfab.com/3d-models/ornamental-demon-skull-18b659ce4e4743c4b81b5868aea060e2
+* author:	Joca (https://sketchfab.com/Joca23)
+
+Model License:
+* license type:	CC-BY-ND-4.0 (http://creativecommons.org/licenses/by-nd/4.0/)
+* requirements:	Author must be credited. Modified versions can not be distributed. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Ornamental Demon Skull" (https://sketchfab.com/3d-models/ornamental-demon-skull-18b659ce4e4743c4b81b5868aea060e2) by Joca (https://sketchfab.com/Joca23) licensed under CC-BY-ND-4.0 (http://creativecommons.org/licenses/by-nd/4.0/)

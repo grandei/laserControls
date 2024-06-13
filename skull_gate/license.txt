@@ -1,0 +1,11 @@
+Model Information:
+* title:	Skull Gate
+* source:	https://sketchfab.com/3d-models/skull-gate-f7cdefd622924116b82202e701e225f9
+* author:	Payam Tavakoli (https://sketchfab.com/payamtavakoli)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Skull Gate" (https://sketchfab.com/3d-models/skull-gate-f7cdefd622924116b82202e701e225f9) by Payam Tavakoli (https://sketchfab.com/payamtavakoli) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

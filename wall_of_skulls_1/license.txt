@@ -1,0 +1,11 @@
+Model Information:
+* title:	Wall Of Skulls 1
+* source:	https://sketchfab.com/3d-models/wall-of-skulls-1-2de75d7afe4543a696f32a3ace1fd9a1
+* author:	campkb (https://sketchfab.com/campkb)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Wall Of Skulls 1" (https://sketchfab.com/3d-models/wall-of-skulls-1-2de75d7afe4543a696f32a3ace1fd9a1) by campkb (https://sketchfab.com/campkb) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
